@@ -20,5 +20,35 @@ events.on("push", function(e, project) {
   node.streamLogs = true;
 
   // We're done configuring, so we run the job
-  node.run()
+  node.run().then( () =&gt; {
+    events.emit("test-done", e, project)
+  })
+
+})
+
+events.on("test-done", (e, project) =&gt; {
+
+	var dockerBuild = new Job("docker-build");
+
+	dockerBuild.image = "docker:dind";
+	dockerBuild.privileged = true;
+	dockerBuild.env = {
+		DOCKER_DRIVER: "overlay"
+	};
+
+	dockerBuild.env.DOCKER_USER = project.secrets.dockerLogin;
+	dockerBuild.env.DOCKER_PASS = project.secrets.dockerPass;
+
+	dockerBuild.tasks = [
+		"dockerd-entrypoint.sh &amp;",
+		"sleep 20", // an arbitrary wait time
+		"cd /src/",
+		"docker build -t quay.io/sohohouse/georgekaz-brigade-test:latest ." ,
+		"docker login -u $DOCKER_USER -p $DOCKER_PASS",
+		"docker push quay.io/sohohouse/georgekaz-brigade-test:latest"
+	]
+
+	dockerBuild.run().then( () =&gt; {
+		events.emit("build-done", e, project);
+	})
 })
