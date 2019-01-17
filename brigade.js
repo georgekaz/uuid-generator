@@ -40,7 +40,7 @@ events.on("test-done", (e, project) => {
 	dockerBuild.env.DOCKER_PASS = project.secrets.dockerPass;
 
 	dockerBuild.tasks = [
-		"dockerd-entrypoint.sh &amp;",
+		"dockerd-entrypoint.sh &",
 		"sleep 20", // an arbitrary wait time
 		"cd /src/",
 		"docker build -t quay.io/sohohouse/georgekaz-brigade-test:latest ." ,
