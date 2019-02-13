@@ -44,7 +44,7 @@ events.on("test-done", (e, project) => {
 		"sleep 20", // an arbitrary wait time
 		"cd /src/",
 		"docker build -t quay.io/sohohouse/georgekaz-brigade-test:latest ." ,
-		"docker login -u $DOCKER_USER -p $DOCKER_PASS",
+		"docker login -u $DOCKER_USER -p $DOCKER_PASS quay.io",
 		"docker push quay.io/sohohouse/georgekaz-brigade-test:latest"
 	];
 
