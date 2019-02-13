@@ -54,11 +54,11 @@ events.on("test-done", (e, project) => {
 });
 
 events.on("build-done", (e, project) => {
-	var deploy = new Job("deploy-runner", "quay.io/sohohouse/drone-helm:euwest1-prod")
-  
+	let deploy = new Job("deploy-runner", "quay.io/sohohouse/drone-helm:euwest1-prod")
+
 	deploy.tasks = [
-	  "cd /src/manifests",
-	  "kubectl apply -f deploy.yml" // Apply the newly created deploy.yml file
+	  "cd /src/manifests/",
+	  "kubectl apply -f deploy.yaml" // Apply the newly created deploy.yml file
 	]
   
 	deploy.run().then( () => {
