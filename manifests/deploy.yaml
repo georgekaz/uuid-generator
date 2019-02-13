@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    name: test
+  name: test
+  namespace: dev
+spec:
+  template:
+    metadata:
+      labels:
+        name: test
+    spec:
+      containers:
+      - image: quay.io/sohohouse/georgekaz-brigade-test:latest
+        name: test
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test
+spec:
+  selector:
+    name: test
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000

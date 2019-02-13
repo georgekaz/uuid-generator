@@ -52,3 +52,17 @@ events.on("test-done", (e, project) => {
 		events.emit("build-done", e, project);
 	});
 });
+
+events.on("build-done", (e, project) => {
+	var deploy = new Job("deploy-runner", "quay.io/sohohouse/drone-helm:euwest1-prod")
+  
+	deploy.tasks = [
+	  "cd /src/manifests",
+	  "kubectl apply -f deploy.yml" // Apply the newly created deploy.yml file
+	]
+  
+	deploy.run().then( () => {
+	  // We'll probably want to do something with a successful deployment later
+	  events.emit("success", e, project)
+	})
+  })
