@@ -1,5 +1,5 @@
 const { events, Job } = require("brigadier");
-//comment
+
 // Github events
 events.on("check_suite:requested", runTests);
 events.on("check_suite:rerequested", runTests);
@@ -29,7 +29,7 @@ function getTestRunner(e, project) {
 
 	// Now we want it to run these commands in order:
 	testRunner.tasks = [
-		"cd /src",
+		"cd /src"
 	];
 
 	// Display logs from the job Pod
@@ -44,7 +44,7 @@ function runTests(e, project) {
   
 	// This Check Run image handles updating GitHub
 	const checkRunImage = "deis/brigade-github-check-run:latest";
-	getTestRunner
+	
 	// Common configuration
 	const env = {
 	  CHECK_PAYLOAD: e.payload,
