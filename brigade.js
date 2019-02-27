@@ -7,9 +7,9 @@ events.on("check_run:rerequested", runTests);
 
 // Internal events
 events.on("tests-passed", buildDockerImage);
-events.on("tests-failed", notifyBuildFailed);
+events.on("tests-failed", notifySlackFailure);
 events.on("build-success", deployHelmChart);
-events.on("build-failure", notifyBuildFailed);
+events.on("build-failure", notifySlackFailure);
 events.on("deploy-success", notifySlackSuccess);
 events.on("deploy-failure", notifySlackSuccess);
 
