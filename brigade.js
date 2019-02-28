@@ -1,9 +1,9 @@
 const { events, Job } = require("brigadier");
 
 // Github events
-events.on("check_suite:requested", runTests);
-events.on("check_suite:rerequested", runTests);
-events.on("check_run:rerequested", runTests);
+// events.on("check_suite:requested", runTests);
+// events.on("check_suite:rerequested", runTests);
+// events.on("check_run:rerequested", runTests);
 
 // Internal events
 events.on("tests-passed", buildDockerImage);
@@ -12,6 +12,36 @@ events.on("build-success", deployHelmChart);
 events.on("build-failure", notifySlackFailure);
 events.on("deploy-success", notifySlackSuccess);
 events.on("deploy-failure", notifySlackSuccess);
+
+events.on("check_suite:requested", function(e, project){
+	console.log("check_suite:requested");
+	console.log(e);
+})
+
+events.on("check_suite:rerequested", function(e, project){
+	console.log("check_suite:rerequested");
+	console.log(e);
+})
+
+events.on("check_run:rerequested", function(e, project){
+	console.log("check_run:rerequested");
+	console.log(e);
+})
+
+events.on("push", function(e, project){
+	console.log("push");
+	console.log(e);
+})
+
+events.on("check_suite", function(e, project){
+	console.log("check_suite");
+	console.log(e);
+})
+
+events.on("check_run", function(e, project){
+	console.log("check_run");
+	console.log(e);
+})
 
 // Our main test logic, refactored into a function that returns the job
 function getTestRunner(e, project) {
@@ -88,14 +118,14 @@ function runTests(e, project) {
 	});
 }
 
-function deployHelmChart(e, project) {
-	console.log("running deployHelmChart");
-	events.emit("deploy-success", e, project);
-}
-
 function buildDockerImage(e, project) {
 	console.log("running buildDockerImage");
 	events.emit("build-success", e, project);
+}
+
+function deployHelmChart(e, project) {
+	console.log("running deployHelmChart");
+	events.emit("deploy-success", e, project);
 }
 
 function notifySlackFailure(e, project) {
