@@ -65,30 +65,30 @@ function getTestRunner(e, project) {
 
 	// Display logs from the job Pod
 	testRunner.streamLogs = true;
-  
+
 	return testRunner;
 }
 
 // This runs our main test job, updating GitHub along the way
-function runTests(e, projbrigadeect) {
+function runTests(e, project) {
 	console.log("running runTests");
-  
+
 	// This Check Run image handles updating GitHub
 	const checkRunImage = "deis/brigade-github-check-run:latest";
-	
+
 	// Common configuration
 	const env = {
 	  CHECK_PAYLOAD: e.payload,
 	  CHECK_NAME: "Brigade",
 	  CHECK_TITLE: "Run Tests",
 	};
-	
+
 	// For convenience, we'll create three jobs: one for each GitHub Check stage
 	const start = new Job("start-run", checkRunImage);
 	start.imageForcePull = true;
 	start.env = env;
 	start.env.CHECK_SUMMARY = "Beginning test run";
-  
+
 	const end = new Job("end-run", checkRunImage);
 	end.imageForcePull = true;
 	end.env = env;
@@ -132,7 +132,7 @@ function deployHelmChart(e, project) {
 function notifySlackFailure(e, project) {
 	console.log("running notifySlackFailure");
 }
- 
+
 function notifySlackSuccess(e, project) {
 	console.log("running notifySlackSuccess")
 }
