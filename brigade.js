@@ -60,7 +60,7 @@ function getTestRunner(e, project) {
 
 	// Now we want it to run these commands in order:
 	testRunner.tasks = [
-		"cd /src"
+		"echo 'hey dude'"
 	];
 
 	// Display logs from the job Pod
@@ -98,7 +98,7 @@ function runTests(e, project) {
 	// - Run the tests
 	// - Notify GitHub of completion
 	//
-	// On error, we catch the eevents.emit("tests-passed", e, project);rror and notify GitHub of a failure.
+	// On error, we catch the error and notify GitHub of a failure.
 	start.run().then(() => {
 	  return getTestRunner(e, project).run()
 	}).then( (result) => {
@@ -106,7 +106,7 @@ function runTests(e, project) {
 	  end.env.CHECK_SUMMARY = "Build completed";
 	  end.env.CHECK_TEXT = result.toString();
 
-	  events.emit("tests-passed", e, project);
+	  // events.emit("tests-passed", e, project);
 	  return end.run();
 	}).catch( (err) => {
 	  // In this case, we mark the ending failed.
@@ -114,7 +114,7 @@ function runTests(e, project) {
 	  end.env.CHECK_SUMMARY = "Build failed";
 	  end.env.CHECK_TEXT = `Error: ${ err }`;
 
-	  events.emit("tests-failed", e, project);
+	  // events.emit("tests-failed", e, project);
 	  return end.run();
 	});
 }
