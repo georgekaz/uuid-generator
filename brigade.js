@@ -92,10 +92,7 @@ function runTests(e, projbrigadeect) {
 	const end = new Job("end-run", checkRunImage);
 	end.imageForcePull = true;
 	end.env = env;
-	function deployHelmChart(e, project) {
-		console.log("running deployHelmChart");
-		events.emit("deploy-success", e, project);
-	}
+
 	// Now we run the jobs in order:
 	// - Notify GitHub of start
 	// - Run the tests
